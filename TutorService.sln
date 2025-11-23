@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{67353862-AFC3-4CE7-A294-262149E84EED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5D865CB1-9619-4E63-B563-B31707A5A720}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{6F99FABA-F88D-4F3F-B0F6-7FF252EB448F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Web", "src\Presentation\TutorService.Web\TutorService.Web.csproj", "{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Domain", "TutorService.Domain\TutorService.Domain.csproj", "{3845C13A-2F5F-4125-A262-2E826C8209E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Infrastructure", "src\Infrastructure\TutorService.Infrastructure\TutorService.Infrastructure.csproj", "{8C157752-5779-486D-A604-71EB75E9E76C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Application", "src\Core\TutorService.Application\TutorService.Application.csproj", "{C6B640CB-A193-43E9-A935-AFE90CB75581}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3845C13A-2F5F-4125-A262-2E826C8209E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3845C13A-2F5F-4125-A262-2E826C8209E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3845C13A-2F5F-4125-A262-2E826C8209E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3845C13A-2F5F-4125-A262-2E826C8209E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C157752-5779-486D-A604-71EB75E9E76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C157752-5779-486D-A604-71EB75E9E76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C157752-5779-486D-A604-71EB75E9E76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C157752-5779-486D-A604-71EB75E9E76C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6B640CB-A193-43E9-A935-AFE90CB75581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6B640CB-A193-43E9-A935-AFE90CB75581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6B640CB-A193-43E9-A935-AFE90CB75581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6B640CB-A193-43E9-A935-AFE90CB75581}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49AEA5B4-928A-45C2-ADFE-A8DE345045E0} = {5D865CB1-9619-4E63-B563-B31707A5A720}
+		{3845C13A-2F5F-4125-A262-2E826C8209E9} = {67353862-AFC3-4CE7-A294-262149E84EED}
+		{8C157752-5779-486D-A604-71EB75E9E76C} = {6F99FABA-F88D-4F3F-B0F6-7FF252EB448F}
+		{C6B640CB-A193-43E9-A935-AFE90CB75581} = {67353862-AFC3-4CE7-A294-262149E84EED}
+	EndGlobalSection
+EndGlobal
