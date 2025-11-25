@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TutorService.Domain\TutorService.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.9\ref\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\9.0.9\ref\net9.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Options">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.options\9.0.11\lib\net9.0\Microsoft.Extensions.Options.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.IdentityModel.Tokens">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\6.35.0\lib\net6.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IdentityModel.Tokens.Jwt">
+        <HintPath>..\..\..\..\..\.nuget\packages\system.identitymodel.tokens.jwt\6.35.0\lib\net6.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="15.1.0" />
+      <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DTOs\Subject\" />
+    </ItemGroup>
+
+</Project>

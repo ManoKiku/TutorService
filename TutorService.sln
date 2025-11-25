@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Web", "src\Presentation\TutorService.Web\TutorService.Web.csproj", "{49AEA5B4-928A-45C2-ADFE-A8DE345045E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Domain", "TutorService.Domain\TutorService.Domain.csproj", "{3845C13A-2F5F-4125-A262-2E826C8209E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Domain", "src\Core\TutorService.Domain\TutorService.Domain.csproj", "{3845C13A-2F5F-4125-A262-2E826C8209E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorService.Infrastructure", "src\Infrastructure\TutorService.Infrastructure\TutorService.Infrastructure.csproj", "{8C157752-5779-486D-A604-71EB75E9E76C}"
 EndProject

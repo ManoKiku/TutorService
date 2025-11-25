@@ -17,10 +17,14 @@ public static class InfrastructureServiceCollectionExtensions
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+        services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
         
         services.AddScoped<DbInitializer>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<ITutorProfileRepository, TutorProfileRepository>();
+        services.AddScoped<ITutorPostRepository, TutorPostRepository>();
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
         
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 

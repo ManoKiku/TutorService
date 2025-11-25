@@ -18,43 +18,22 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request)
     {
-        try
-        {
-            var result = await _authService.RegisterAsync(request);
-            return Ok(result);
-        }
-        catch (System.ArgumentException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        var result = await _authService.RegisterAsync(request);
+        return Ok(result);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
     {
-        try
-        {
-            var result = await _authService.LoginAsync(request);
-            return Ok(result);
-        }
-        catch (System.UnauthorizedAccessException)
-        {
-            return Unauthorized(new { message = "Invalid email or password" });
-        }
+        var result = await _authService.LoginAsync(request);
+        return Ok(result);
     }
 
     [HttpPost("refresh-token")]
     public async Task<ActionResult<AuthResponse>> RefreshToken(RefreshTokenRequest request)
     {
-        try
-        {
-            var result = await _authService.RefreshTokenAsync(request);
-            return Ok(result);
-        }
-        catch (System.UnauthorizedAccessException)
-        {
-            return Unauthorized(new { message = "Invalid token" });
-        }
+        var result = await _authService.RefreshTokenAsync(request);
+        return Ok(result);
     }
 
     [HttpPost("revoke-token")]

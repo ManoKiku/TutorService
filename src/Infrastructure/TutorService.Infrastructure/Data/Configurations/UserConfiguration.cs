@@ -43,7 +43,6 @@ public class UserConfiguration : BaseEntityConfiguration<User>
             .IsRequired()
             .HasDefaultValue(false);
 
-        // Связи
         builder.HasMany(u => u.TutorProfiles)
             .WithOne(t => t.User)
             .HasForeignKey(t => t.UserId)

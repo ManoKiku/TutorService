@@ -4,6 +4,7 @@ using TutorService.Application.DTOs;
 using TutorService.Application.DTOs.Auth;
 using TutorService.Application.Intefaces;
 using TutorService.Domain.Entities;
+using TutorService.Domain.Enums;
 using TutorService.Domain.Interfaces;
 
 namespace TutorService.Application.Services;
@@ -35,6 +36,16 @@ public class AuthService : IAuthService
         if (await _userRepository.UserExistsAsync(request.Email))
         {
             throw new ArgumentException("User with this email already exists");
+        }
+
+        if(!Enum.IsDefined(typeof(UserRole), request.Role))
+        {
+            throw new ArgumentException("No such role");
+        }
+
+        if(request.Role == UserRole.Admin)
+        {
+            throw new ArgumentException("Admin role is not accessible");
         }
 
         var user = new User
