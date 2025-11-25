@@ -1,4 +1,4 @@
-namespace TutorService.Application.DTOs.Tutor;
+namespace TutorService.Application.DTOs.City;
 
 public class CityRequest
 {

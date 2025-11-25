@@ -13,15 +13,24 @@ public class TutorPostService : ITutorPostService
     private readonly ITutorPostRepository _postRepository;
     private readonly ITutorProfileRepository _tutorProfileRepository;
     private readonly ISubjectRepository _subjectRepository;
+    private readonly ITagRepository _tagRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<TutorPostService> _logger;
 
-    public TutorPostService(ITutorPostRepository postRepository, ITutorProfileRepository tutorProfileRepository, IMapper mapper, ILogger<TutorPostService> logger)
+    public TutorPostService(
+        ITutorPostRepository postRepository, 
+        ITutorProfileRepository tutorProfileRepository, 
+        ISubjectRepository subjectRepository,
+        ITagRepository tagRepository,
+        IMapper mapper, 
+        ILogger<TutorPostService> logger)
     {
         _postRepository = postRepository;
         _tutorProfileRepository = tutorProfileRepository;
         _mapper = mapper;
         _logger = logger;
+        _subjectRepository = subjectRepository;
+        _tagRepository = tagRepository;
     }
 
     public async Task<TutorPostDto> CreateAsync(Guid tutorProfileId, TutorPostCreateRequest request)
@@ -29,16 +38,16 @@ public class TutorPostService : ITutorPostService
         var tutor = await _tutorProfileRepository.GetWithDetailsAsync(tutorProfileId);
         if (tutor == null) throw new KeyNotFoundException("Tutor profile not found");
         
-        // var subjectExists = await _subjectRepository.GetByIdAsync(request.SubjectId) is not null;
-        // if (!subjectExists)
-        //     throw new KeyNotFoundException($"Subject with ID {request.SubjectId} not found");
-        //
-        // if (request.TagIds != null && request.TagIds.Any())
-        // {
-        //     var existingTags = await _tagRepository.GetExistingTagIdsAsync(request.TagIds);
-        //     if (existingTags.Count() != request.TagIds.Count())
-        //         throw new KeyNotFoundException("One or more tag IDs are invalid");
-        // }
+        var subjectExists = await _subjectRepository.GetByIdAsync(request.SubjectId) is not null;
+        if (!subjectExists)
+            throw new KeyNotFoundException($"Subject with ID {request.SubjectId} not found");
+        
+        if (request.TagIds != null && request.TagIds.Any())
+        {
+            var existingTags = await _tagRepository.GetExistingTagIdsAsync(request.TagIds);
+            if (existingTags.Count() != request.TagIds.Count())
+                throw new KeyNotFoundException("One or more tag IDs are invalid");
+        }
         var post = new TutorPost
         {
             TutorId = tutorProfileId,

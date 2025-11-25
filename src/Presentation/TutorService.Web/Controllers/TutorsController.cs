@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using TutorService.Application.DTOs.City;
 using TutorService.Application.DTOs.Tutor;
 using TutorService.Application.Intefaces;
 using TutorService.Web.Helpers;

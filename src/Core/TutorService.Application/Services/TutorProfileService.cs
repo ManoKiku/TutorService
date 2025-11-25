@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using TutorService.Application.DTOs.City;
 using TutorService.Application.DTOs.Tutor;
 using TutorService.Application.Intefaces;
 using TutorService.Domain.Enums;

@@ -105,7 +105,15 @@ public class TutorPostController : ControllerBase
     public async Task<IActionResult> MyPosts([FromQuery] PostStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         var userId = ControllerHelper.GetUserIdFromClaims(User);
-        var (results, total) = await _postService.GetMyPostsAsync(userId, status, page, pageSize);
+        
+        var tutorProfile = await _profileService.GetByUserIdAsync(userId);
+
+        if (tutorProfile is null)
+        {
+            return Unauthorized("No tutor profile found.");
+        }
+        
+        var (results, total) = await _postService.GetMyPostsAsync(tutorProfile.Id, status, page, pageSize);
         return Ok(new { results, total });
     }
 

@@ -19,6 +19,8 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<ISubjectService, SubjectService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ISubCategoryService, SubCategoryService>();
+        services.AddScoped<ITagService, TagService>();
+        services.AddScoped<ICityService, CityService>();
         
         services.AddAutoMapper(cfg =>
         {
@@ -27,6 +29,8 @@ public static class ApplicationServiceCollectionExtensions
             cfg.AddProfile<SubjectMappingProfile>();
             cfg.AddProfile<CategoryMappingProfile>();
             cfg.AddProfile<SubcategoryMappingProfile>();
+            cfg.AddProfile<TagMappingProfile>();
+            cfg.AddProfile<CityMappingProfile>();
         });
 
         return services;

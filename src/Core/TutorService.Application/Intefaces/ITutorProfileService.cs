@@ -1,4 +1,4 @@
-using TutorService.Application.DTOs;
+using TutorService.Application.DTOs.City;
 using TutorService.Application.DTOs.Tutor;
 
 namespace TutorService.Application.Intefaces;

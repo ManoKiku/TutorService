@@ -25,6 +25,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<ITutorProfileRepository, TutorProfileRepository>();
         services.AddScoped<ITutorPostRepository, TutorPostRepository>();
         services.AddScoped<ISubjectRepository, SubjectRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
         
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
