@@ -19,9 +19,7 @@ public class LessonRepository : BaseRepository<Lesson>, ILessonRepository
         DateTime? startDate = null,
         DateTime? endDate = null,
         Guid? tutorId = null,
-        Guid? studentId = null,
-        int page = 1,
-        int pageSize = 20)
+        Guid? studentId = null)
     {
         var query = _context.Lessons
             .Include(l => l.Tutor)
@@ -61,8 +59,6 @@ public class LessonRepository : BaseRepository<Lesson>, ILessonRepository
 
         return await query
             .OrderBy(l => l.StartTime)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .ToListAsync();
     }
 

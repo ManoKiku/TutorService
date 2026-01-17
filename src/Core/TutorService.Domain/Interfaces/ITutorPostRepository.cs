@@ -14,17 +14,15 @@ public interface ITutorPostRepository : IRepository<TutorPost>
     Task RemoveTagAsync(Guid postId, int tagId);
     Task<IEnumerable<Tag?>> GetTagsAsync(Guid postId);
 
-    Task<(IEnumerable<TutorPost> Results, int TotalCount)> SearchAsync(
+    Task<IEnumerable<TutorPost>> SearchAsync(
         int? subjectId,
         int? cityId,
         IEnumerable<int>? tagIds,
         PostStatus? status,
-        int page,
-        int pageSize,
         Guid? tutorId,
         string? search);
 
-    Task<(IEnumerable<TutorPost> Results, int TotalCount)> GetMyPostsAsync(Guid tutorId, PostStatus? status, int page, int pageSize);
+    Task<IEnumerable<TutorPost>> GetMyPostsAsync(Guid tutorId, PostStatus? status);
 
     Task ModerateAsync(Guid id, PostStatus status, Guid adminId);
 }

@@ -17,12 +17,9 @@ public class TagsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TagDto>>> GetTags(
-        [FromQuery] string? search,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    public async Task<ActionResult<IEnumerable<TagDto>>> GetTags()
     {
-        var tags = await _tagService.GetTagsAsync(search, page, pageSize);
+        var tags = await _tagService.GetAllTagsAsync();
         return Ok(tags);
     }
 

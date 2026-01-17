@@ -17,10 +17,10 @@ public class SubjectsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery]string? search, [FromQuery]int page = 1, [FromQuery]int pageSize = 20)
+    public async Task<IActionResult> Get()
     {
-        var (results, total) = await _service.SearchAsync(search, page, pageSize);
-        return Ok(new { results, total });
+        var result = await _service.GetAllAync();
+        return Ok(result);
     }
 
     [HttpPost]

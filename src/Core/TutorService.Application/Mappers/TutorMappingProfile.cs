@@ -12,6 +12,7 @@ public class TutorMappingProfile : Profile
         CreateMap<TutorProfileDto, TutorProfile>();
         CreateMap<TutorPost, TutorPostDto>()
             .ForMember(d => d.SubjectName, opt => opt.MapFrom(s => s.Subject!.Name))
+            .ForMember(d => d.HourlyRate, opt => opt.MapFrom(s => s.Tutor!.HourlyRate))
             .ForMember(d => d.TutorName, opt => opt.MapFrom(s => s.Tutor!.User!.FirstName + " " + s.Tutor.User.LastName))
             .ForMember(d => d.Tags, opt => opt.MapFrom(s => s.TutorPostTags.Select(t => t.Tag)));
         CreateMap<TutorPostDto, TutorPost>();

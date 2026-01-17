@@ -32,25 +32,21 @@ public class StudentTutorRelationsController : ControllerBase
 
     [HttpGet("my-students")]
     [Authorize(Roles = "Tutor")]
-    public async Task<ActionResult<StudentTutorRelationsResponse>> GetMyStudents(
-        [FromQuery] string? search,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    public async Task<ActionResult<IEnumerable<StudentTutorRelationDto>>> GetMyStudents(
+        [FromQuery] string? search)
     {
         var tutorId = ControllerHelper.GetUserIdFromClaims(User);
-        var response = await _relationService.GetMyStudentsAsync(tutorId, search, page, pageSize);
+        var response = await _relationService.GetMyStudentsAsync(tutorId, search);
         return Ok(response);
     }
 
     [HttpGet("my-tutors")]
     [Authorize(Roles = "Student")]
-    public async Task<ActionResult<StudentTutorRelationsResponse>> GetMyTutors(
-        [FromQuery] string? search,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    public async Task<ActionResult<IEnumerable<StudentTutorRelationDto>>> GetMyTutors(
+        [FromQuery] string? search)
     {
         var studentId = ControllerHelper.GetUserIdFromClaims(User);
-        var response = await _relationService.GetMyTutorsAsync(studentId, search, page, pageSize);
+        var response = await _relationService.GetMyTutorsAsync(studentId, search);
         return Ok(response);
     }
 
@@ -69,14 +65,11 @@ public class StudentTutorRelationsController : ControllerBase
 
     [HttpGet("check")]
     [Authorize(Roles = "Student,Tutor")]
-    public async Task<ActionResult<RelationCheckResponse>> CheckRelation(
-        [FromQuery] Guid? studentId,
-        [FromQuery] Guid? tutorId)
+    public async Task<ActionResult<StudentTutorRelationDto>> CheckRelation(
+        [FromQuery] Guid studentId,
+        [FromQuery] Guid tutorId)
     {
-        var currentUserId = ControllerHelper.GetUserIdFromClaims(User);
-        var currentUserRole = ControllerHelper.GetUserRoleFromClaims(User);
-        
-        var response = await _relationService.CheckRelationAsync(studentId, tutorId, currentUserId, currentUserRole);
+        var response = await _relationService.CheckRelationAsync(studentId, tutorId);
         return Ok(response);
     }
 }

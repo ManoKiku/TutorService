@@ -61,7 +61,12 @@ public class TutorPostController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var userId = ControllerHelper.GetUserIdFromClaims(User);
-        await _postService.DeleteAsync(userId, id);
+        var tutorProfile = await _profileService.GetByUserIdAsync(userId);
+        
+        if(tutorProfile is null)
+            return  Unauthorized("No tutor profile found.");
+        
+        await _postService.DeleteAsync(tutorProfile.Id, id);
         return NoContent();
     }
 
@@ -91,18 +96,18 @@ public class TutorPostController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] int? subjectId, [FromQuery] int? cityId, [FromQuery] string? tags, [FromQuery] PostStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+    public async Task<IActionResult> Search([FromQuery] int? subjectId, [FromQuery] int? cityId, [FromQuery] string? tags, [FromQuery] PostStatus? status, [FromQuery] string? search = null)
     {
         IEnumerable<int>? tagIds = null;
         if (!string.IsNullOrWhiteSpace(tags)) tagIds = tags.Split(',').Select(int.Parse);
 
-        var (results, total) = await _postService.SearchAsync(subjectId, cityId, tagIds, status, page, pageSize, search);
-        return Ok(new { results, total });
+        var result = await _postService.SearchAsync(subjectId, cityId, tagIds, status, search);
+        return Ok(result);
     }
 
     [HttpGet("my")]
     [Authorize]
-    public async Task<IActionResult> MyPosts([FromQuery] PostStatus? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> MyPosts([FromQuery] PostStatus? status)
     {
         var userId = ControllerHelper.GetUserIdFromClaims(User);
         
@@ -113,9 +118,24 @@ public class TutorPostController : ControllerBase
             return Unauthorized("No tutor profile found.");
         }
         
-        var (results, total) = await _postService.GetMyPostsAsync(tutorProfile.Id, status, page, pageSize);
-        return Ok(new { results, total });
+        var result = await _postService.GetMyPostsAsync(tutorProfile.Id, status);
+        return Ok(result);
     }
+    
+    [HttpGet("tutors/{id}")]
+    public async Task<IActionResult> GetByTutorId(Guid id)
+    {
+        var tutorProfile = await _profileService.GetWithDetailsAsync(id);
+
+        if (tutorProfile is null)
+        {
+            return Unauthorized("No tutor profile found.");
+        }
+        
+        var result = await _postService.GetMyPostsAsync(tutorProfile.Id, null);
+        return Ok(result);
+    }
+    
 
     [HttpPost("{id}/moderate")]
     [Authorize(Roles = "Admin")]

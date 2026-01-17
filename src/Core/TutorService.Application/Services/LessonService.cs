@@ -69,7 +69,7 @@ public class LessonService : ILessonService
         return _mapper.Map<LessonDto>(createdLesson);
     }
 
-    public async Task<LessonsResponse> GetLessonsAsync(
+    public async Task<IEnumerable<LessonDto>> GetLessonsAsync(
         Guid currentUserId,
         string currentUserRole,
         Guid? userId = null,
@@ -77,9 +77,7 @@ public class LessonService : ILessonService
         DateTime? startDate = null,
         DateTime? endDate = null,
         Guid? tutorId = null,
-        Guid? studentId = null,
-        int page = 1,
-        int pageSize = 20)
+        Guid? studentId = null)
     {
         if (currentUserRole != "Admin")
         {
@@ -95,19 +93,12 @@ public class LessonService : ILessonService
         }
 
         var lessons = await _lessonRepository.GetFilteredLessonsAsync(
-            userId, status, startDate, endDate, tutorId, studentId, page, pageSize);
+            userId, status, startDate, endDate, tutorId, studentId);
 
         var totalCount = await _lessonRepository.GetFilteredLessonsCountAsync(
             userId, status, startDate, endDate, tutorId, studentId);
 
-        return new LessonsResponse
-        {
-            Lessons = _mapper.Map<IEnumerable<LessonDto>>(lessons),
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize,
-            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
-        };
+        return _mapper.Map<IEnumerable<LessonDto>>(lessons);
     }
 
     public async Task<LessonDto?> GetByIdAsync(Guid id, Guid currentUserId, string currentUserRole)
@@ -149,9 +140,11 @@ public class LessonService : ILessonService
     {
         var lesson = await _lessonRepository.GetByIdAsync(id);
         if (lesson == null)
-            return false;
+            throw new KeyNotFoundException("Lesson not found");
+        
+        var tutorProfile  = await _tutorProfileRepository.GetByUserIdAsync(currentUserId);
 
-        if (currentUserRole != "Admin" && lesson.TutorId != currentUserId)
+        if (currentUserRole != "Admin" && lesson.TutorId != tutorProfile?.Id)
             throw new UnauthorizedAccessException("You can only delete your own lessons");
 
         _lessonRepository.Remove(lesson);

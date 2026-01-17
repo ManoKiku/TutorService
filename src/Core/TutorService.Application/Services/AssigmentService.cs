@@ -94,10 +94,10 @@ public class AssignmentService : IAssignmentService
             if(tutorProfile is null && currentUserRole == "Tutor")
                 throw new KeyNotFoundException("Tutor not found");
 
-            var isParticipant = await _assignmentRepository.IsUserParticipantAsync(lessonId,
-                tutorProfile == null ? currentUserId : tutorProfile.Id);
+            var isParticipant = await _lessonRepository.IsUserParticipantAsync(lessonId,
+                tutorProfile?.Id ?? currentUserId);
             if (!isParticipant)
-                throw new UnauthorizedAccessException("You don't have access to this lesson's assignments");
+                throw new ArgumentException("You don't have access to this lesson's assignments");
         }
 
         var assignments = await _assignmentRepository.GetByLessonIdAsync(lessonId);
@@ -114,7 +114,7 @@ public class AssignmentService : IAssignmentService
         
         if(tutorProfile is null && currentUserRole == "Tutor")
             throw new KeyNotFoundException("Tutor not found");
-
+        
         if (currentUserRole != "Admin" && !await _assignmentRepository.IsUserParticipantAsync(id, tutorProfile == null ? currentUserId : tutorProfile.Id))
             throw new UnauthorizedAccessException("You don't have access to this assignment");
 
@@ -156,7 +156,7 @@ public class AssignmentService : IAssignmentService
         if(tutorProfile is null && currentUserRole == "Tutor")
             throw new KeyNotFoundException("Tutor not found");
 
-        if (currentUserRole != "Admin" && !await _assignmentRepository.IsUserParticipantAsync(id, tutorProfile == null ? currentUserId : tutorProfile.Id))
+        if (currentUserRole != "Admin" && !await _assignmentRepository.IsUserParticipantAsync(id, tutorProfile?.Id ?? currentUserId))
             throw new UnauthorizedAccessException("You don't have access to this assignment");
 
 

@@ -4,7 +4,7 @@ namespace TutorService.Application.Interfaces;
 
 public interface ICityService
 {
-    Task<IEnumerable<CityDto>> GetCitiesAsync(string? search, int page, int pageSize);
+    Task<IEnumerable<CityDto>> GetCitiesAsync();
     Task<CityDto?> GetCityByIdAsync(int id);
     Task<CityDto> CreateCityAsync(CityCreateDto createDto);
     Task<CityDto?> UpdateCityAsync(int id, CityUpdateDto updateDto);

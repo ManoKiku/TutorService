@@ -5,6 +5,7 @@ using System.Text;
 using TutorService.Application.Configuration;
 using TutorService.Infrastructure.Data;
 using TutorService.Web.Configuration;
+using TutorService.Web.Hubs;
 using TutorService.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -82,12 +83,58 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
+    
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && 
+                path.StartsWithSegments("/chatHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        },
+        
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.TryAdd("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowNextJsApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .SetIsOriginAllowed((host) => true);
+        });
+});
+
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+    {
+        options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+    });
+
 var app = builder.Build();
+
+app.UseCors("AllowNextJsApp");
 
 if (app.Environment.IsDevelopment())
 {
@@ -109,5 +156,10 @@ using (var scope = app.Services.CreateScope())
     var initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
     await initializer.SeedAsync();
 }
+
+app.MapControllers();
+app.MapHub<ChatHub>("/chatHub");
+
+
 
 app.Run();

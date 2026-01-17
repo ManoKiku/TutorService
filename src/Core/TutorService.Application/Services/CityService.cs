@@ -16,22 +16,12 @@ public class CityService : ICityService
         _cityRepository = cityRepository;
         _mapper = mapper;
     }
-    
-    public async Task<IEnumerable<CityDto>> GetCitiesAsync(string? search, int page, int pageSize)
+
+    public async Task<IEnumerable<CityDto>> GetCitiesAsync()
     {
         var cities = await _cityRepository.GetAllAsync();
         
-        if (!string.IsNullOrEmpty(search))
-        {
-            cities = cities.Where(c => c.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
-        }
-
-        var pagedCities = cities
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return _mapper.Map<IEnumerable<CityDto>>(pagedCities);
+        return _mapper.Map<IEnumerable<CityDto>>(cities);
     }
 
     public async Task<CityDto?> GetCityByIdAsync(int id)

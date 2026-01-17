@@ -26,7 +26,7 @@ public class StudentTutorRelationRepository : CrudRepository<StudentTutorRelatio
             .FirstOrDefaultAsync(r => r.StudentId == studentId && r.TutorId == tutorId);
     }
 
-    public async Task<IEnumerable<StudentTutorRelation>> GetByTutorAsync(Guid tutorId, string? search = null, int page = 1, int pageSize = 20)
+    public async Task<IEnumerable<StudentTutorRelation>> GetByTutorAsync(Guid tutorId, string? search = null)
     {
         var query = _dbSet
             .Include(r => r.Student)
@@ -42,12 +42,10 @@ public class StudentTutorRelationRepository : CrudRepository<StudentTutorRelatio
 
         return await query
             .OrderByDescending(r => r.AddedAt)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<StudentTutorRelation>> GetByStudentAsync(Guid studentId, string? search = null, int page = 1, int pageSize = 20)
+    public async Task<IEnumerable<StudentTutorRelation>> GetByStudentAsync(Guid studentId, string? search = null)
     {
         var query = _dbSet
             .Include(r => r.Tutor)
@@ -64,8 +62,6 @@ public class StudentTutorRelationRepository : CrudRepository<StudentTutorRelatio
 
         return await query
             .OrderByDescending(r => r.AddedAt)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .ToListAsync();
     }
 

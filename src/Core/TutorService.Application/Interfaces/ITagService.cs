@@ -5,7 +5,7 @@ namespace TutorService.Application.Interfaces;
 
 public interface ITagService
 {
-    Task<IEnumerable<TagDto>> GetTagsAsync(string? search, int page, int pageSize);
+    Task<IEnumerable<TagDto>> GetAllTagsAsync();
     Task<TagDto?> GetTagByIdAsync(int id);
     Task<TagDto> CreateTagAsync(TagCreateDto createDto);
     Task<TagDto?> UpdateTagAsync(int id, TagUpdateDto updateDto);

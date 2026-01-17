@@ -14,15 +14,13 @@ public interface ITutorPostService
     Task RemoveTagAsync(Guid tutorProfileId, Guid postId, int tagId);
     Task<IEnumerable<TagDto>> GetTagsAsync(Guid postId);
 
-    Task<(IEnumerable<TutorPostDto> Results, int TotalCount)> SearchAsync(
+    Task<IEnumerable<TutorPostDto>> SearchAsync(
         int? subjectId,
         int? cityId,
         IEnumerable<int>? tagIds,
         PostStatus? status,
-        int page,
-        int pageSize,
         string? search);
 
-    Task<(IEnumerable<TutorPostDto> Results, int TotalCount)> GetMyPostsAsync(Guid tutorProfileId, PostStatus? status, int page, int pageSize);
+    Task<IEnumerable<TutorPostDto>> GetMyPostsAsync(Guid tutorProfileId, PostStatus? status);
     Task ModerateAsync(Guid id, PostStatus status, Guid adminId);
 }

@@ -17,12 +17,9 @@ public class CitiesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CityDto>>> GetCities(
-        [FromQuery] string? search,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    public async Task<ActionResult<IEnumerable<CityDto>>> GetCities()
     {
-        var cities = await _cityService.GetCitiesAsync(search, page, pageSize);
+        var cities = await _cityService.GetCitiesAsync();
         return Ok(cities);
     }
 

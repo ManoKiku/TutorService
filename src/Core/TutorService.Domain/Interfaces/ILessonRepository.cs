@@ -11,9 +11,7 @@ public interface ILessonRepository : IRepository<Lesson>
         DateTime? startDate = null,
         DateTime? endDate = null,
         Guid? tutorId = null,
-        Guid? studentId = null,
-        int page = 1,
-        int pageSize = 20);
+        Guid? studentId = null);
 
     Task<int> GetFilteredLessonsCountAsync(
         Guid? userId = null,

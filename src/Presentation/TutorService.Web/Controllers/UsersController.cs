@@ -61,7 +61,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}/tutor-profile")]
-    [Authorize]
     public async Task<ActionResult<TutorProfileDto>> GetUserTutorProfile(Guid id, [FromServices] ITutorProfileService tutorProfileService)
     {
         var profile = await tutorProfileService.GetByUserIdAsync(id);

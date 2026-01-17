@@ -78,13 +78,11 @@ public class TutorPostRepository : BaseRepository<TutorPost>, ITutorPostReposito
             .ToListAsync();
     }
 
-    public async Task<(IEnumerable<TutorPost> Results, int TotalCount)> SearchAsync(
+    public async Task<IEnumerable<TutorPost>> SearchAsync(
         int? subjectId,
         int? cityId,
         IEnumerable<int>? tagIds,
         PostStatus? status,
-        int page,
-        int pageSize,
         Guid? tutorId,
         string? search)
     {
@@ -93,6 +91,8 @@ public class TutorPostRepository : BaseRepository<TutorPost>, ITutorPostReposito
             .Where(p => !p.IsDeleted)
             .Include(p => p.Tutor)
                 .ThenInclude(t => t!.TutorCities)
+            .Include(p => p.Tutor)
+                .ThenInclude(t => t!.User)
             .Include(p => p.TutorPostTags)
                 .ThenInclude(tpt => tpt.Tag)
             .Include(p => p.Subject)
@@ -121,20 +121,15 @@ public class TutorPostRepository : BaseRepository<TutorPost>, ITutorPostReposito
             query = query.Where(p => p.Description.ToLower().Contains(s) || p.Tutor!.Bio.ToLower().Contains(s));
         }
 
-        var total = await query.CountAsync();
-
-        var results = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        return (results, total);
+        return await query.ToListAsync();
     }
 
-    public async Task<(IEnumerable<TutorPost> Results, int TotalCount)> GetMyPostsAsync(Guid tutorId, PostStatus? status, int page, int pageSize)
+    public async Task<IEnumerable<TutorPost>> GetMyPostsAsync(Guid tutorId, PostStatus? status)
     {
         var query = _dbSet.Where(p => !p.IsDeleted && p.TutorId == tutorId);
         if (status.HasValue) query = query.Where(p => p.Status == status.Value);
 
-        var total = await query.CountAsync();
-        var results = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        return (results, total);
+        return await query.ToListAsync();
     }
 
     public async Task ModerateAsync(Guid id, PostStatus status, Guid adminId)

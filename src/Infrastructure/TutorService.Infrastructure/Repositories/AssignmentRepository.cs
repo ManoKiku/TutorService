@@ -35,10 +35,11 @@ public class AssignmentRepository : BaseRepository<Assignment>, IAssignmentRepos
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<bool> IsUserParticipantAsync(Guid assignmentId, Guid userId)
+    public async Task<bool> IsUserParticipantAsync(Guid id, Guid userId)
     {
         return await _dbSet
-            .AnyAsync(a => a.Id == assignmentId && 
+            .Include(a => a.Lesson)
+            .AnyAsync(a => a.Id == id && 
                            (a.Lesson!.TutorId == userId || a.Lesson!.StudentId == userId));
     }
 }

@@ -33,6 +33,7 @@ public class TutorProfileRepository : BaseRepository<TutorProfile>, ITutorProfil
                 .ThenInclude(p => p.Subject)
             .Include(tp => tp.Lessons)
             .Include(tp => tp.Chats)
+            .Include(tp => tp.User)
             .FirstOrDefaultAsync();
     }
 

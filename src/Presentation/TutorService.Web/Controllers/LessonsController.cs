@@ -31,22 +31,20 @@ public class LessonsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<LessonsResponse>> GetLessons(
+    public async Task<ActionResult<IEnumerable<LessonDto>>> GetLessons(
         [FromQuery] Guid? userId,
         [FromQuery] LessonStatus? status,
         [FromQuery] DateTime? startDate,
         [FromQuery] DateTime? endDate,
         [FromQuery] Guid? tutorId,
-        [FromQuery] Guid? studentId,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+        [FromQuery] Guid? studentId)
     {
         var currentUserId = ControllerHelper.GetUserIdFromClaims(User);
         var currentUserRole = ControllerHelper.GetUserRoleFromClaims(User);
         
         var response = await _lessonService.GetLessonsAsync(
             currentUserId, currentUserRole, userId, status, startDate, endDate, 
-            tutorId, studentId, page, pageSize);
+            tutorId, studentId);
             
         return Ok(response);
     }

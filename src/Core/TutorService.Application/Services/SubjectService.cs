@@ -17,10 +17,17 @@ public class SubjectService : ISubjectService
         _mapper = mapper;
     }
 
-    public async Task<(IEnumerable<SubjectDto> Results, int TotalCount)> SearchAsync(string? search, int page, int pageSize)
+    public async Task<(IEnumerable<SubjectDto> Results, int TotalCount)> Get(string? search, int page, int pageSize)
     {
         var (results, total) = await _repo.SearchAsync(search, page, pageSize);
         return (results.Select(s => _mapper.Map<SubjectDto>(s)), total);
+    }
+
+    public async Task<IEnumerable<SubjectDto>> GetAllAync()
+    {
+        var subjects = await _repo.GetAllAsync();
+        
+        return _mapper.Map<IEnumerable<SubjectDto>>(subjects);
     }
 
     public async Task<SubjectDto?> GetByIdAsync(int id)

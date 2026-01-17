@@ -114,16 +114,16 @@ public class TutorPostService : ITutorPostService
         return tags.Select(t => _mapper.Map<TagDto>(t));
     }
 
-    public async Task<(IEnumerable<TutorPostDto> Results, int TotalCount)> SearchAsync(int? subjectId, int? cityId, IEnumerable<int>? tagIds, PostStatus? status, int page, int pageSize, string? search)
+    public async Task<IEnumerable<TutorPostDto>> SearchAsync(int? subjectId, int? cityId, IEnumerable<int>? tagIds, PostStatus? status, string? search)
     {
-        var (results, total) = await _postRepository.SearchAsync(subjectId, cityId, tagIds, status, page, pageSize, null, search);
-        return (results.Select(r => _mapper.Map<TutorPostDto>(r)), total);
+        var result = await _postRepository.SearchAsync(subjectId, cityId, tagIds, status, null, search);
+        return _mapper.Map<IEnumerable<TutorPostDto>>(result);
     }
 
-    public async Task<(IEnumerable<TutorPostDto> Results, int TotalCount)> GetMyPostsAsync(Guid tutorProfileId, PostStatus? status, int page, int pageSize)
+    public async Task<IEnumerable<TutorPostDto>> GetMyPostsAsync(Guid tutorProfileId, PostStatus? status)
     {
-        var (results, total) = await _postRepository.GetMyPostsAsync(tutorProfileId, status, page, pageSize);
-        return (results.Select(r => _mapper.Map<TutorPostDto>(r)), total);
+        var result = await _postRepository.GetMyPostsAsync(tutorProfileId, status);
+        return _mapper.Map<IEnumerable<TutorPostDto>>(result);
     }
 
     public async Task ModerateAsync(Guid id, PostStatus status, Guid adminId)

@@ -55,39 +55,25 @@ public class StudentTutorRelationService : IStudentTutorRelationService
         return _mapper.Map<StudentTutorRelationDto>(relationWithDetails!);
     }
 
-    public async Task<StudentTutorRelationsResponse> GetMyStudentsAsync(Guid tutorUserId, string? search = null, int page = 1, int pageSize = 20)
+    public async Task<IEnumerable<StudentTutorRelationDto>> GetMyStudentsAsync(Guid tutorUserId, string? search = null)
     {
         var tutorProfile = await _tutorProfileRepository.GetByUserIdAsync(tutorUserId);
         
         if (tutorProfile == null)
             throw new KeyNotFoundException("Tutor profile not found");
         
-        var relations = await _relationRepository.GetByTutorAsync(tutorProfile.Id, search, page, pageSize);
+        var relations = await _relationRepository.GetByTutorAsync(tutorProfile.Id, search);
         var totalCount = await _relationRepository.GetByTutorCountAsync(tutorProfile.Id, search);
 
-        return new StudentTutorRelationsResponse
-        {
-            Relations = _mapper.Map<IEnumerable<StudentTutorRelationDto>>(relations),
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize,
-            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
-        };
+        return _mapper.Map<IEnumerable<StudentTutorRelationDto>>(relations);
     }
 
-    public async Task<StudentTutorRelationsResponse> GetMyTutorsAsync(Guid studentId, string? search = null, int page = 1, int pageSize = 20)
+    public async Task<IEnumerable<StudentTutorRelationDto>> GetMyTutorsAsync(Guid studentId, string? search = null)
     {
-        var relations = await _relationRepository.GetByStudentAsync(studentId, search, page, pageSize);
+        var relations = await _relationRepository.GetByStudentAsync(studentId, search);
         var totalCount = await _relationRepository.GetByStudentCountAsync(studentId, search);
 
-        return new StudentTutorRelationsResponse
-        {
-            Relations = _mapper.Map<IEnumerable<StudentTutorRelationDto>>(relations),
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize,
-            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
-        };
+        return _mapper.Map<IEnumerable<StudentTutorRelationDto>>(relations);
     }
 
     public async Task<bool> DeleteRelationAsync(Guid tutorUserId, Guid studentId)
@@ -100,31 +86,19 @@ public class StudentTutorRelationService : IStudentTutorRelationService
         return await _relationRepository.DeleteByStudentAndTutorAsync(studentId, tutorProfile.Id);
     }
 
-    public async Task<RelationCheckResponse> CheckRelationAsync(Guid? studentId, Guid? tutorUserId, Guid currentUserId, string currentUserRole)
+    public async Task<StudentTutorRelationDto> CheckRelationAsync(Guid studentId, Guid tutorId)
     {
-        if (currentUserRole != "Admin")
-        {
-            if (currentUserRole == "Student")
-                studentId = currentUserId;
-            else if (currentUserRole == "Tutor")
-                tutorUserId = currentUserId;
-        }
-
-        if (!studentId.HasValue || !tutorUserId.HasValue)
-            return new RelationCheckResponse { Exists = false };
-        
-        var tutorProfile = await _tutorProfileRepository.GetByUserIdAsync(tutorUserId.Value);
+        var tutorProfile = await _tutorProfileRepository.GetByIdAsync(tutorId);
         
         if (tutorProfile == null)
-            throw new KeyNotFoundException("Tutor profile not found");
+            throw new ArgumentException("Tutor profile not found");
 
-        var relation = await _relationRepository.GetByStudentAndTutorAsync(studentId.Value, tutorProfile.Id);
+        var relation = await _relationRepository.GetByStudentAndTutorAsync(studentId, tutorProfile.Id);
         
-        return new RelationCheckResponse
-        {
-            Exists = relation != null,
-            Relation = relation != null ? _mapper.Map<StudentTutorRelationDto>(relation) : null
-        };
+        if(relation == null)
+            throw new KeyNotFoundException("Relation not found");
+
+        return _mapper.Map<StudentTutorRelationDto>(relation);
     }
 
     public async Task<bool> AreRelatedAsync(Guid studentId, Guid tutorId)

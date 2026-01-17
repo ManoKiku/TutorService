@@ -16,21 +16,11 @@ public class TagService : ITagService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<TagDto>> GetTagsAsync(string? search, int page, int pageSize)
+    public async Task<IEnumerable<TagDto>> GetAllTagsAsync()
     {
         var tags = await _tagRepository.GetAllAsync();
-        
-        if (!string.IsNullOrEmpty(search))
-        {
-            tags = tags.Where(t => t.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
-        }
 
-        var pagedTags = tags
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return _mapper.Map<IEnumerable<TagDto>>(pagedTags);
+        return _mapper.Map<IEnumerable<TagDto>>(tags);
     }
 
     public async Task<TagDto?> GetTagByIdAsync(int id)
